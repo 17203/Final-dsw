@@ -3,7 +3,10 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Fragancias</title>
+  <?php if(isset($_GET['acondicionadores'])): ?>
+    <title>Jabones</title>
+  <?php endif; ?>
+	<title>test</title>
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
@@ -69,7 +72,7 @@
     	<div class="row" id="test1">
       <div class="col-md-3" id="test2">
       	<div class="card" style="width:12rem;"><!--este es igual a los otros 4, usenlo como referencia para modificar los demás-->
-  			<img src="..." class="card-img-top" alt="Fragancia 1"><!--Aquí ponen la imagen, y el nombre del producto-->
+  			<img src="..." class="card-img-top" alt="Jabón 1"><!--Aquí ponen la imagen, y el nombre del producto-->
   			<div class="card-body">
    			<h5 class="card-title">Ejemplo de producto</h5><!--Titulo principal del producto-->
     		<p class="card-text">Aquí va toda la información sobre este</p><!--Precio, nombre, información y demás-->
@@ -79,7 +82,7 @@
       </div>
       <div class="col-md-3" id="test2">
       	<div class="card" style="width:12rem;">
-  			<img src="..." class="card-img-top" alt="Fragancia 2">
+  			<img src="..." class="card-img-top" alt="Jabón 2">
   			<div class="card-body">
    			<h5 class="card-title">Ejemplo de producto</h5>
     		<p class="card-text">Aquí va toda la información sobre este</p>
@@ -89,7 +92,7 @@
       </div>
       <div class="col-md-3" id="test2">
       <div class="card" style="width:12rem;">
-  			<img src="..." class="card-img-top" alt="Fragancia 3">
+  			<img src="..." class="card-img-top" alt="Jabón 3">
   			<div class="card-body">
    			<h5 class="card-title">Ejemplo de producto</h5>
     		<p class="card-text">Aquí va toda la información sobre este</p>
@@ -99,7 +102,7 @@
       </div>
       <div class="col-md-3" id="test2">
       	<div class="card" style="width:12rem;">
-  			<img src="..." class="card-img-top" alt="Fragancia 4">
+  			<img src="..." class="card-img-top" alt="Jabón 4">
   			<div class="card-body">
    			<h5 class="card-title">Ejemplo de producto</h5>
     		<p class="card-text">Aquí va toda la información sobre este</p>

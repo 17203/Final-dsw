@@ -46,7 +46,9 @@
       		<button>perfil </button>
   		</form>
   		<form class="form" action="carrito.php" method="GET">
-      		<button>carrito </button>
+      		<button><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bag" viewBox="0 0 16 16">
+  <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z"/>
+</svg>Carrito</button><!--Este lo hice con boostrap, cambienlo si quieren-->
   		</form>
     </div>
   </div>
@@ -57,7 +59,7 @@
   </div>
   <div class="row"id="test1"><!--pagina -->
     <div class="col-md-3" id="test2"><!--Opciones de catalogo -->
-      <a href="acondicionadores.php">Acondicionadores</a></br>
+      <a href="pagina_general.php">Acondicionadores<?phpheader('Location: index.php?acondicionadores=true');?></a></br>
       <a href="shampoo.php">Shampoo</a></br>
       <a href="jabones.php">Jabones</a></br>
       <a href="fragancias.php">Fragancias 1</a></br><!--Luego decidir como ponerle(Hombre y mujer, masculino y femenino, etc)-->
