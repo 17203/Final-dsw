@@ -29,6 +29,34 @@
 		</div>
 	</div>
 <a href="index.php"><button>click para volver al index</button></a>
+	<img src="https://c8.alamy.com/comp/F4FFK7/access-denied-sign-image-with-clipping-path-F4FFK7.jpg" style="display: none;" id="img-error">
+
+	<script src="https://code.jquery.com/jquery-2.2.4.js" integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI=" crossorigin="anonymous"></script>
+
+	<script type="text/javascript">
+    $('#user-form').submit(function(event){
+        event.preventDefault();
+
+        var data = $(this).serialize();
+        $('#img-error').hide();
+        $.ajax({
+            url: "validation.php",
+            method: 'GET',
+            data: data,    
+            success: function(response){
+                console.log(response);
+                if(response == 'true'){
+                    alert('Bienvenido usuario');
+                    window.location.href = 'index.php';
+                } else {
+                    alert('Credenciales inválidas');
+                    $('#img-error').show();
+                }
+            }
+        });
+    });
+</script>
+
 
 </body>
 </html>

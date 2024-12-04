@@ -1,3 +1,15 @@
+<?php 
+
+@session_start();
+
+if (isset($_SESSION['is logged']) && $_SESSION['is logged']) {
+    echo "Sesión iniciada por {$_SESSION['username']}";
+} else {
+    echo "Sesión no iniciada";
+}
+
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -36,19 +48,25 @@
       Imagén
     </div>
     <div class="col" id="test2"><!--Barra de busqueda-->
-      Barra de busqueda
+      <input type="text" placeholder="Buscar en la pagina">
+      <button>Imagen </button>
     </div>
     <div class="col" id="test2"><!--Opciones varias-->
-    	<form class="form" action="login.php" method="GET">
-      		<button>Login </button>
-  		</form>
-  		<form class="form" action="perfil.php" method="GET">
-      		<button>perfil </button>
-  		</form>
-  		<form class="form" action="carrito.php" method="GET">
-      		<button><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bag" viewBox="0 0 16 16">
+
+
+      		<button><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bag" viewBox="0 0 16 16"><!--Este lo hice con boostrap, cambienlo si quieren-->
   <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z"/>
-</svg>Carrito</button><!--Este lo hice con boostrap, cambienlo si quieren-->
+</svg><a href="carrito.php">Carrito</a></button>
+<?php if (isset($_SESSION['is logged']) && $_SESSION['is logged']): ?>
+    <!-- Este botón solo es visible cuando hay una sesión iniciada -->
+    <button><a href="perfil.php">Perfil</a></button>
+    <button class="btn btn-danger">
+        <a href="logout.php" style="text-decoration: none; color: white;">Logout</a>
+    </button>
+<?php else: ?>
+    <!-- Este botón es visible cuando no hay una sesión iniciada -->
+    <button><a href="login.php">Login</a></button>
+<?php endif; ?>
   		</form>
     </div>
   </div>
@@ -58,18 +76,14 @@
     </div>
   </div>
   <div class="row"id="test1"><!--pagina -->
-    <div class="col-md-3" id="test2"><!--Opciones de catalogo -->
+    <div class="col-md" id="test2"><!--catalogo-->
       <a href="pagina_general.php">Acondicionadores<?phpheader('Location: index.php?acondicionadores=true');?></a></br>
       <a href="shampoo.php">Shampoo</a></br>
       <a href="jabones.php">Jabones</a></br>
       <a href="fragancias.php">Fragancias 1</a></br><!--Luego decidir como ponerle(Hombre y mujer, masculino y femenino, etc)-->
       <a href="fragancias2.php">Fragancias 2</a></br>
     </div>
-    <div class="col-md-9" id="test2"><!--catalogo-->
-      Catalogo, divido en 4 cuadriculas para pantallas grandes, en 2 para pantallas chicas.</br>
-      Se necesita poner en display la imagen del producto, su precio, nombre</br>
-      Boton para más detalles y para agregar al carro </br>
-    </div>
+</div>
 </div>
 </body>
 </html>
