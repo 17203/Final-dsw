@@ -1,119 +1,184 @@
+<?php
+try {
+    $pdo = new PDO('mysql:host=sql100.infinityfree.com;dbname=if0_37852780_dswfinal2', 'if0_37852780', '9iEuUer5Hz'); // Cambia los datos según tu configuración
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    die("Conexión fallida: " . $e->getMessage());
+}
+
+// Verificar que id_categoria esté presente en la URL
+if (!isset($_GET['id_categoria']) || empty($_GET['id_categoria'])) {
+    die("No se proporcionó una categoría válida.");
+}
+
+$id_categoria = (int)$_GET['id_categoria'];
+
+try {
+    // Consulta para obtener productos de la categoría seleccionada
+    $sql = "SELECT id_producto, nombre, precio, imagen FROM productos WHERE id_categoria = :id_categoria";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([':id_categoria' => $id_categoria]);
+
+    $productos = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    die("Error en la consulta: " . $e->getMessage());
+}
+?>
+
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-  <?php if(isset($_GET['acondicionadores'])): ?>
-    <title>Jabones</title>
-  <?php endif; ?>
-	<title>test</title>
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Esencia Selecta - Productos</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #121212; /* Fondo oscuro */
+            color: #e0e0e0; /* Texto claro */
+        }
+        .container {
+            margin-top: 50px;
+        }
+        h1 {
+            color: #82a6b1; /* Color suave para el título */
+            text-align: center;
+            margin-bottom: 30px; /* Espacio inferior */
+        }
+        .card {
+            border: none; /* Sin borde para las tarjetas */
+            border-radius: 10px; /* Bordes redondeados */
+            background-color: #1e1e1e; /* Fondo de tarjeta oscuro */
+            transition: transform 0.2s; /* Efecto de transición */
+        }
+        .card:hover {
+            transform: scale(1.05); /* Efecto de aumento al pasar el mouse */
+        }
+        .card-img-top {
+            height: 300px; /* Altura fija para las imágenes */
+            object-fit: cover; /* Ajustar imagen sin distorsionar */
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+        .card-title {
+            color: #FFD700; /* Color dorado para el título del producto */
+        }
+        .card-text {
+            color: #d0d0d0; /* Texto claro para mejor legibilidad */
+        }
+        .btn-info {
+            background-color: #5b3000; /* Color marrón suave para Ver Detalle */
+            border-color: #66462c;
+        }
+        .btn-success {
+            background-color: #28a745; /* Color verde para Agregar al Carrito */
+            border-color: #218838;
+        }
+        .btn-info:hover, .btn-success:hover {
+            opacity: 0.9; /* Efecto de opacidad al pasar el mouse */
+        }
 
-<style type="text/css">
-	#test1{
-		border-width: 5px;
-		border-style: solid;
-		border-color: black;
-		padding: 20px;
-	}
-	#test2{
-		border-width: 5px;
-		border-style: solid;
-		border-color: blue;
-		padding: 20px;
-	}
+        /* Estilos del menú lateral */
+        .sidenav {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            background-color: #111;
+            overflow-x: hidden;
+            transition: 0.5s;
+            padding-top: 60px;
+        }
 
-</style>
+        .sidenav a {
+            padding: 8px 8px 8px 32px;
+            text-decoration: none;
+            font-size: 25px;
+            color: #818181;
+            display: block;
+            transition: 0.3s;
+        }
 
+        .sidenav a:hover {
+            color: #f1f1f1;
+        }
+
+        .sidenav .closebtn {
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            font-size: 36px;
+            margin-left: 50px;
+        }
+
+        /* Estilo del botón hamburguesa */
+        .menu-btn {
+            font-size: 30px;
+            cursor: pointer;
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            color: white; 
+        }
+    </style>
 </head>
 <body>
- <div class="container text-center">
-  <div class="row" id="test1"><!--Barra de decoracion -->
-    <div class="col" id="test2">
-      Decoración
-    </div>
-  </div>
-  <div class="row"id="test1"><!--Titular principal -->
-    <div class="col" id="test2"><!--Imagen de regreso, en este caso no lleva a ningun lado ya que es el index. Dentro de las categorias este formato de cabecera no desaparecera por lo que dentro de estas, esta imagen se utilizara para regresar al index-->
-      Imagén
-    </div>
-    <div class="col" id="test2"><!--Barra de busqueda-->
-      Barra de busqueda
-    </div>
-    <div class="col" id="test2"><!--Opciones varias-->
-    	<form class="form" action="login.php" method="GET">
-      		<button>Login </button>
-  		</form>
-  		<form class="form" action="perfil.php" method="GET">
-      		<button>perfil </button>
-  		</form>
-  		<form class="form" action="carrito.php" method="GET">
-      		<button><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bag" viewBox="0 0 16 16">
-  <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z"/>
-</svg>Carrito</button><!--Este lo hice con boostrap, cambienlo si quieren-->
-  		</form>
-    </div>
-  </div>
-  <div class="row"id="test1"><!--Barra de decoracion -->
-    <div class="col">
-      :D
-    </div>
-  </div>
-  <div class="row"id="test1"><!--pagina -->
-    <div class="col-md-2" id="test2"><!--Opciones de catalogo -->
-      <a href="acondicionadores.php">Acondicionadores</a></br>
-      <a href="shampoo.php">Shampoo</a></br>
-      <a href="jabones.php">Jabones</a></br>
-      <a href="fragancias.php">Fragancias 1</a></br><!--Luego decidir como ponerle(Hombre y mujer, masculino y femenino, etc)-->
-      <a href="fragancias2.php">Fragancias 2</a></br>
-    </div>
-    <div class="col-md-10" id="test2"><!--catalogo-->
-    	<div class="row" id="test1">
-      <div class="col-md-3" id="test2">
-      	<div class="card" style="width:12rem;"><!--este es igual a los otros 4, usenlo como referencia para modificar los demás-->
-  			<img src="..." class="card-img-top" alt="Jabón 1"><!--Aquí ponen la imagen, y el nombre del producto-->
-  			<div class="card-body">
-   			<h5 class="card-title">Ejemplo de producto</h5><!--Titulo principal del producto-->
-    		<p class="card-text">Aquí va toda la información sobre este</p><!--Precio, nombre, información y demás-->
-    		<a href="#" class="btn btn-primary">Este boton lo agregaria al carrito</a><!--Usa el a para enviarlo al carrito, luego resuelvo el como agregarlo-->
-  			</div>
-		</div>
-      </div>
-      <div class="col-md-3" id="test2">
-      	<div class="card" style="width:12rem;">
-  			<img src="..." class="card-img-top" alt="Jabón 2">
-  			<div class="card-body">
-   			<h5 class="card-title">Ejemplo de producto</h5>
-    		<p class="card-text">Aquí va toda la información sobre este</p>
-    		<a href="#" class="btn btn-primary">Este boton lo agregaria al carrito</a>
-  			</div>
-		</div>
-      </div>
-      <div class="col-md-3" id="test2">
-      <div class="card" style="width:12rem;">
-  			<img src="..." class="card-img-top" alt="Jabón 3">
-  			<div class="card-body">
-   			<h5 class="card-title">Ejemplo de producto</h5>
-    		<p class="card-text">Aquí va toda la información sobre este</p>
-    		<a href="#" class="btn btn-primary">Este boton lo agregaria al carrito</a>
-  			</div>
-		</div>
-      </div>
-      <div class="col-md-3" id="test2">
-      	<div class="card" style="width:12rem;">
-  			<img src="..." class="card-img-top" alt="Jabón 4">
-  			<div class="card-body">
-   			<h5 class="card-title">Ejemplo de producto</h5>
-    		<p class="card-text">Aquí va toda la información sobre este</p>
-    		<a href="#" class="btn btn-primary">Este boton lo agregaria al carrito</a>
-  			</div>
-		</div>
-      </div>
-  </div>
+
+<div id="mySidenav" class="sidenav">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+    <a href="index.php">Inicio</a>
+    <a href="carrito.php">Carrito</a>
+    <a href="perfil.php">Perfil</a>
+    <a href="pagina_general.php?id_categoria=1">Fragancias H</a>
+    <a href="pagina_general.php?id_categoria=2">Fragancias M</a>
+    <a href="pagina_general.php?id_categoria=3">Shampoo</a>
+    <a href="pagina_general.php?id_categoria=4">Cremas</a>
+</div>
+
+<span class="menu-btn" onclick="openNav()">&#9776;</span>
+
+<div class="container mt-5" id="main">
+    <h1 class="text-center mb-4">Productos</h1>
+    <div class="row mt-4">
+        <?php foreach ($productos as $producto): ?>
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <img src="<?= htmlspecialchars($producto['imagen']) ?>" class="card-img-top" alt="<?= htmlspecialchars($producto['nombre']) ?>">
+                    <div class="card-body">
+                        <h5 class="card-title"><?= htmlspecialchars($producto['nombre']) ?></h5>
+                        <p class="card-text">Precio: $<?= number_format($producto['precio'], 2) ?></p>
+
+                        <!-- Botón Ver Detalle -->
+                        <a href="detalle_producto.php?id_producto=<?= $producto['id_producto'] ?>" class="btn btn-info">Ver Detalle</a>
+
+                        <!-- Botón Agregar al Carrito -->
+                        <form action="carrito.php" method="POST" style="display:inline;">
+                            <input type="hidden" name="id_producto" value="<?= $producto['id_producto'] ?>">
+                            <button type="submit" class="btn btn-success">Agregar al Carrito</button>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        <?php endforeach; ?>
     </div>
 </div>
-<a href="index.php"><button>click para volver al index</button></a>
+
+<script>
+function openNav() {
+    document.getElementById("mySidenav").style.width = "250px";
+}
+
+function closeNav() {
+    document.getElementById("mySidenav").style.width = "0";
+}
+</script>
+
+<footer class="text-center py-4 bg-light">
+    <p>&copy; <?= date("Y"); ?> Esencia Selecta. Todos los derechos reservados.</p>
+</footer>
 
 </body>
 </html>
